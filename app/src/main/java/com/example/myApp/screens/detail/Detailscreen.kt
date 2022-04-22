@@ -1,5 +1,6 @@
 package com.example.myApp.screens.detail
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -7,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -38,7 +40,8 @@ fun DetailScreen(puzzleId: String? = "tt0499549", navController: NavController =
                 }
             }
         }
-    ) {
+    )
+    {
         MainContent(puzzle = puzzle)
     }
 }
@@ -56,6 +59,22 @@ fun MainContent(puzzle: PuzzleList) {
             Spacer(modifier = Modifier.height(8.dp))
             Divider()
             HorizontalScrollableImageView(puzzle = puzzle)
+            Text(
+                text = "Modes:",
+                style = MaterialTheme.typography.caption
+            )
+            Text(
+                text = "Easy",
+                style = MaterialTheme.typography.caption
+            )
+            Text(
+                text = "Normal",
+                style = MaterialTheme.typography.caption
+            )
+            Text(
+                text = "Difficult",
+                style = MaterialTheme.typography.caption
+            )
         }
     }
 }

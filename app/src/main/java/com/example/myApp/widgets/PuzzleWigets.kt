@@ -56,34 +56,34 @@ fun PuzzleRow(puzzle: PuzzleList, Click: (String) -> Unit = {}) {
                 )
             }
             Column {
-                Text(
-                    text = puzzle.title,
-                    style = MaterialTheme.typography.caption
-                )
-                Text(
-                    text = "Name: ${puzzle.name}",
-                    style = MaterialTheme.typography.subtitle1
-                )
-                Text(
-                    text = "Difficulty: ${puzzle.difficulty}",
-                    style = MaterialTheme.typography.subtitle1
-                )
+//                Text(
+//                    text = puzzle.title,
+//                    style = MaterialTheme.typography.caption
+//                )
+//                Text(
+//                    text = "Name: ${puzzle.name}",
+//                    style = MaterialTheme.typography.subtitle1
+//                )
+//                Text(
+//                    text = "Difficulty: ${puzzle.difficulty}",
+//                    style = MaterialTheme.typography.subtitle1
+//                )
                 AnimatedVisibility(visible = state) {
                     Column(
                         modifier = Modifier
                             .padding(10.dp,8.dp,0.dp,0.dp)
                     ) {
                         Text(
-                            text = "Plot: ${puzzle.difficulty}",
+                            text = "${puzzle.title}",
                             style = MaterialTheme.typography.subtitle2
                         )
                         Divider(Modifier.padding(5.dp), color = Color.Gray, thickness = 1.dp )
                         Text(
-                            text = "Genre: ${puzzle.difficulty}",
+                            text = "Name: ${puzzle.name}",
                             style = MaterialTheme.typography.subtitle2
                         )
                         Text(
-                            text = "Rating: ${puzzle.difficulty}",
+                            text = "Difficulty: ${puzzle.difficulty}",
                             style = MaterialTheme.typography.subtitle2
                         )
                     }
