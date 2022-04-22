@@ -14,9 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.myApp.Daten.Movie
-import com.example.myApp.Daten.getMovies
-import com.example.myApp.widgets.MovieRow
+import com.example.myApp.Daten.PuzzleList
+import com.example.myApp.Daten.getPuzzles
+import com.example.myApp.widgets.PuzzleRow
 
 @Preview(showBackground = true)
 @Composable
@@ -26,7 +26,7 @@ fun HomeScreen(navController: NavController = rememberNavController()){
     }
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "Movies", style = MaterialTheme.typography.caption) },
+            TopAppBar(title = { Text(text = "Main Menu", style = MaterialTheme.typography.caption) },
                 actions = {
                     IconButton(onClick = { showMenu = !showMenu }) {
                         Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
@@ -61,11 +61,11 @@ fun HomeScreen(navController: NavController = rememberNavController()){
 }
 
 @Composable
-fun MainContent(movies: List<Movie> = getMovies(), navController: NavController) {
+fun MainContent(puzzles: List<PuzzleList> = getPuzzles(), navController: NavController) {
     LazyColumn {
-        items(items = movies) { movie ->
-            MovieRow(movie = movie) { movieId ->
-                navController.navigate(route = "detailscreen/$movieId")
+        items(items = puzzles) { puzzle ->
+            PuzzleRow(puzzle = puzzle) { puzzleId ->
+                navController.navigate(route = "detailscreen/$puzzleId")
             }
         }
     }

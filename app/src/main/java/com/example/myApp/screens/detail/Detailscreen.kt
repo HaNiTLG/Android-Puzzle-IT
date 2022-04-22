@@ -11,15 +11,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.myApp.Daten.Movie
-import com.example.myApp.Daten.getMovie
+import com.example.myApp.Daten.PuzzleList
+import com.example.myApp.Daten.getPuzzle
 import com.example.myApp.widgets.HorizontalScrollableImageView
-import com.example.myApp.widgets.MovieRow
+import com.example.myApp.widgets.PuzzleRow
 
 @Preview(showBackground = true)
 @Composable
-fun DetailScreen(movieId: String? = "tt0499549", navController: NavController = rememberNavController()) {
-    val movie = getMovie(movieId = movieId)
+fun DetailScreen(puzzleId: String? = "tt0499549", navController: NavController = rememberNavController()) {
+    val puzzle = getPuzzle(puzzleId = puzzleId)
     Scaffold(
         topBar = {
             TopAppBar(elevation = 3.dp) {
@@ -32,14 +32,14 @@ fun DetailScreen(movieId: String? = "tt0499549", navController: NavController = 
 
                     Spacer(modifier = Modifier.width(20.dp))
 
-                    Text(text = movie.title,
+                    Text(text = puzzle.title,
                         style = MaterialTheme.typography.caption
                     )
                 }
             }
         }
     ) {
-        MainContent(movie = movie)
+        MainContent(puzzle = puzzle)
     }
 }
 
@@ -47,15 +47,15 @@ fun DetailScreen(movieId: String? = "tt0499549", navController: NavController = 
 
 
 @Composable
-fun MainContent(movie: Movie) {
+fun MainContent(puzzle: PuzzleList) {
     Surface(modifier = Modifier
         .fillMaxHeight()
         .fillMaxWidth()) {
         Column {
-            MovieRow(movie = movie)
+            PuzzleRow(puzzle = puzzle)
             Spacer(modifier = Modifier.height(8.dp))
             Divider()
-            HorizontalScrollableImageView(movie = movie)
+            HorizontalScrollableImageView(puzzle = puzzle)
         }
     }
 }

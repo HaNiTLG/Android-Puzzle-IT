@@ -22,11 +22,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.myApp.Daten.Movie
-import com.example.myApp.Daten.getMovies
+import com.example.myApp.Daten.PuzzleList
+import com.example.myApp.Daten.getPuzzles
 
 @Composable
-fun MovieRow(movie: Movie, Click: (String) -> Unit = {}) {
+fun PuzzleRow(puzzle: PuzzleList, Click: (String) -> Unit = {}) {
     var state by remember {
         mutableStateOf(false)
     }
@@ -34,7 +34,7 @@ fun MovieRow(movie: Movie, Click: (String) -> Unit = {}) {
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .clickable { Click(movie.id) }
+            .clickable { Click(puzzle.id) }
             .defaultMinSize(minHeight = 130.dp),
 
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
@@ -47,7 +47,7 @@ fun MovieRow(movie: Movie, Click: (String) -> Unit = {}) {
                     .padding(12.dp),
             ) {
                 AsyncImage(model = ImageRequest.Builder(LocalContext.current)
-                    .data(movie.images[0])
+                    .data(puzzle.images[0])
                     .crossfade(true)
                     .build(),
                     contentDescription = "movie picture",
@@ -57,15 +57,15 @@ fun MovieRow(movie: Movie, Click: (String) -> Unit = {}) {
             }
             Column {
                 Text(
-                    text = movie.title,
+                    text = puzzle.title,
                     style = MaterialTheme.typography.caption
                 )
                 Text(
-                    text = "Director: ${movie.director}",
+                    text = "Name: ${puzzle.name}",
                     style = MaterialTheme.typography.subtitle1
                 )
                 Text(
-                    text = "Release: ${movie.year}",
+                    text = "Difficulty: ${puzzle.difficulty}",
                     style = MaterialTheme.typography.subtitle1
                 )
                 AnimatedVisibility(visible = state) {
@@ -74,16 +74,16 @@ fun MovieRow(movie: Movie, Click: (String) -> Unit = {}) {
                             .padding(10.dp,8.dp,0.dp,0.dp)
                     ) {
                         Text(
-                            text = "Plot: ${movie.plot}",
+                            text = "Plot: ${puzzle.difficulty}",
                             style = MaterialTheme.typography.subtitle2
                         )
                         Divider(Modifier.padding(5.dp), color = Color.Gray, thickness = 1.dp )
                         Text(
-                            text = "Genre: ${movie.genre}",
+                            text = "Genre: ${puzzle.difficulty}",
                             style = MaterialTheme.typography.subtitle2
                         )
                         Text(
-                            text = "Rating: ${movie.rating}",
+                            text = "Rating: ${puzzle.difficulty}",
                             style = MaterialTheme.typography.subtitle2
                         )
                     }
@@ -101,11 +101,11 @@ fun MovieRow(movie: Movie, Click: (String) -> Unit = {}) {
 }
 
 @Composable
-fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]) {
+fun HorizontalScrollableImageView(puzzle: PuzzleList = getPuzzles()[0]) {
     LazyRow {
-        items(movie.images) { image ->
+        items(puzzle.images) { image ->
             Card(modifier = Modifier.padding(12.dp).size(240.dp), elevation = 4.dp) {
-                AsyncImage(model = image, contentDescription = movie.title )
+                AsyncImage(model = image, contentDescription = puzzle.title )
             }
         }
     }
