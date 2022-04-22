@@ -13,9 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.myApp.Daten.Movie
-import com.example.myApp.Daten.getMovies
-import com.example.myApp.widgets.MovieRow
+import com.example.myApp.Daten.PuzzleList
+import com.example.myApp.Daten.getPuzzles
+import com.example.myApp.widgets.PuzzleRow
 
 @Preview(showBackground = true)
 @Composable
@@ -44,10 +44,10 @@ fun FavoritScreen(navController: NavController = rememberNavController()) {
 }
 
 @Composable
-fun MainContent(movies: List<Movie> = getMovies()) {
+fun MainContent(puzzles: List<PuzzleList> = getPuzzles()) {
     LazyColumn {
-        items(items = movies.slice(1..3)) { movie ->
-            MovieRow(movie = movie)
+        items(items = puzzles.slice(1..3)) { puzzle ->
+            PuzzleRow(puzzle = puzzle)
         }
     }
 }

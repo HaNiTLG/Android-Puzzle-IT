@@ -18,12 +18,12 @@ fun MyNavigation(){
     startDestination = "homescreen") {
         composable("homescreen") { HomeScreen(navController = navController)}
         composable(
-            "detailscreen/{movieId}",
-            arguments = listOf(navArgument("movieId") {
+            "detailscreen/{puzzleId}",
+            arguments = listOf(navArgument("puzzleId") {
                 type = NavType.StringType
             })
         ) { backStackEntry ->
-            DetailScreen(navController = navController, movieId = backStackEntry.arguments?.getString("movieId"))
+            DetailScreen(navController = navController, puzzleId = backStackEntry.arguments?.getString("puzzleId"))
         }
         composable("gamescreen") { Gamescreen(navController = navController) }
     }
