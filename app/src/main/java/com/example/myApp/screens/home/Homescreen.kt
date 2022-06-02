@@ -1,9 +1,12 @@
 package com.example.myApp.screens.home
 
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -60,13 +63,16 @@ fun HomeScreen(navController: NavController = rememberNavController()){
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainContent(puzzles: List<PuzzleList> = getPuzzles(), navController: NavController) {
-    LazyColumn {
+    LazyVerticalGrid (
+        cells = GridCells.Adaptive(minSize = 120.dp))
+    {
         items(items = puzzles) { puzzle ->
             PuzzleRow(puzzle = puzzle) { puzzleId ->
                 navController.navigate(route = "detailscreen/$puzzleId")
+
             }
         }
-    }
-}
+    }}
