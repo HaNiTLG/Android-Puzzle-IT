@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -35,16 +36,16 @@ fun PuzzleRow(puzzle: PuzzleList, Click: (String) -> Unit = {}) {
             .padding(4.dp)
             .fillMaxWidth()
             .clickable { Click(puzzle.id) }
-            .defaultMinSize(minHeight = 130.dp),
+            .defaultMinSize(minHeight = 10.dp),
 
-        shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+        shape = RoundedCornerShape(corner = CornerSize(25.dp)),
         elevation = 6.dp
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(
                 modifier = Modifier
-                    .size(100.dp)
-                    .padding(12.dp),
+                    .size(130.dp)
+                    .padding(0.dp),
             ) {
                 AsyncImage(model = ImageRequest.Builder(LocalContext.current)
                     .data(puzzle.images[0])
@@ -52,7 +53,7 @@ fun PuzzleRow(puzzle: PuzzleList, Click: (String) -> Unit = {}) {
                     .build(),
                     contentDescription = "movie picture",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.clip(CircleShape)
+                    modifier = Modifier.clip(RectangleShape)
                 )
             }
             Column {
@@ -86,13 +87,6 @@ fun PuzzleRow(puzzle: PuzzleList, Click: (String) -> Unit = {}) {
                             text = "Difficulty: ${puzzle.difficulty}",
                             style = MaterialTheme.typography.subtitle2
                         )
-                    }
-                }
-                IconButton(onClick = { state = !state }) {
-                    if (!state) {
-                        Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "More")
-                    } else {
-                        Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "Less")
                     }
                 }
             }

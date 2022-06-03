@@ -31,26 +31,17 @@ fun DetailScreen(puzzleId: String? = "tt0499549", navController: NavController =
                         modifier = Modifier.clickable {
                             navController.popBackStack()
                         })
-
-                    Spacer(modifier = Modifier.width(20.dp))
-
-                    Text(text = puzzle.title,
-                        style = MaterialTheme.typography.caption
-                    )
-                }
+                    }
+                 }
             }
-        }
-    )
-    {
-        MainContent(puzzle = puzzle)
+         )
+         {
+        MainContent(puzzle = puzzle, navController)
     }
 }
 
-
-
-
 @Composable
-fun MainContent(puzzle: PuzzleList) {
+fun MainContent(puzzle: PuzzleList, navController: NavController = rememberNavController()) {
     Surface(modifier = Modifier
         .fillMaxHeight()
         .fillMaxWidth()) {
@@ -63,18 +54,18 @@ fun MainContent(puzzle: PuzzleList) {
                 text = "Modes:",
                 style = MaterialTheme.typography.caption
             )
-            Text(
-                text = "Easy",
-                style = MaterialTheme.typography.caption
-            )
-            Text(
-                text = "Normal",
-                style = MaterialTheme.typography.caption
-            )
-            Text(
-                text = "Difficult",
-                style = MaterialTheme.typography.caption
-            )
+            OutlinedButton(onClick = {navController.navigate(route = "gamescreen")})
+            {
+                Text("Easy")
+            }
+            OutlinedButton(onClick = {navController.navigate(route = "gamescreen")})
+            {
+                Text("Normal")
+            }
+            OutlinedButton(onClick = {navController.navigate(route = "gamescreen")})
+            {
+                Text("Difficult")
+            }
         }
     }
 }
