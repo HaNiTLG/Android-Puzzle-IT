@@ -29,7 +29,7 @@ fun getPuzzles(): List<PuzzleList> {
             title = "Level 2",
             name = "Landscape",
             difficulty = "Easy",
-            images = listOf(R.drawable.englischerosen),
+            images = listOf(R.drawable.rosen),
         ),
 
         PuzzleList(
