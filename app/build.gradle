@@ -50,11 +50,14 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
     //Coil
     implementation "io.coil-kt:coil-compose:$coil_version"
+    //Move Grid
+    implementation "org.burnoutcrew.composereorderable:reorderable:$move_grid"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation 'androidx.activity:activity-compose:1.3.1'
     testImplementation 'junit:junit:4.13.2'

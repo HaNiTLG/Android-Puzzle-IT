@@ -1,16 +1,19 @@
 package com.example.myApp.screens.home
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +24,7 @@ import com.example.myApp.Daten.PuzzleList
 import com.example.myApp.Daten.getPuzzles
 import com.example.myApp.widgets.PuzzleRow
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
 fun HomeScreen(navController: NavController = rememberNavController()){
@@ -67,7 +71,7 @@ fun HomeScreen(navController: NavController = rememberNavController()){
 @Composable
 fun MainContent(puzzles: List<PuzzleList> = getPuzzles(), navController: NavController) {
     LazyVerticalGrid (
-        cells = GridCells.Adaptive(minSize = 120.dp))
+        columns = GridCells.Adaptive(minSize = 120.dp))
     {
         items(items = puzzles) { puzzle ->
             PuzzleRow(puzzle = puzzle) { puzzleId ->
