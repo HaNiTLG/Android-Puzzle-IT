@@ -2,6 +2,7 @@ package com.example.myApp.screens.game
 
 
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.icu.text.LocaleDisplayNames
@@ -13,7 +14,10 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -21,6 +25,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -35,10 +40,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myApp.R
+import org.burnoutcrew.reorderable.ReorderableItem
+import org.burnoutcrew.reorderable.detectReorderAfterLongPress
+import org.burnoutcrew.reorderable.rememberReorderableLazyGridState
+import org.burnoutcrew.reorderable.reorderable
 import java.util.*
 import kotlin.math.roundToInt
 
 
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
 fun Gamescreen (navController: NavController = rememberNavController(), difficulty: Int = 0, imageID: Int = 0) {
@@ -61,12 +72,13 @@ fun Gamescreen (navController: NavController = rememberNavController(), difficul
             }
         }
     ) {
-        MainContent(difficulty, imageID)
-        //movePictures()
+        //MainContent(difficulty, imageID)
+        VerticalGrid()
     }
 }
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainContent(difficulty: Int, imageID: Int) {
@@ -79,6 +91,7 @@ fun MainContent(difficulty: Int, imageID: Int) {
     val list = (1..colum*colum).map { it.toString() } //9,16,25
     val configuration = LocalConfiguration.current
     val imageHeight = (configuration.screenHeightDp.dp - (101-(5-colum)).dp) / colum
+
     val b: Bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, R.drawable.rosen)
     val splittedBitmap = splitImage(b,colum*colum)
     //3 = 99, 4 = 100, 5 = 101
@@ -88,8 +101,9 @@ fun MainContent(difficulty: Int, imageID: Int) {
             .fillMaxHeight()
             .padding(5.dp),
     ) {
+
         LazyVerticalGrid(
-            cells = GridCells.Fixed(colum), //Anzahl der Spalten
+            columns = GridCells.Fixed(colum), //Anzahl der Spalten
             modifier = Modifier,
             contentPadding = PaddingValues(
                 start = 12.dp,
@@ -97,10 +111,9 @@ fun MainContent(difficulty: Int, imageID: Int) {
                 end = 12.dp,
                 bottom = 16.dp
             )
-        ) {
+        ){
             itemsIndexed(list) { it, list ->
                 Card(
-                    //backgroundColor = Color.Red,
                     modifier = Modifier
                         .padding(1.dp)
                         .fillMaxWidth()
@@ -110,7 +123,6 @@ fun MainContent(difficulty: Int, imageID: Int) {
                         .fillMaxHeight(),
                     elevation = 8.dp,
                 ) {
-
                     Image(bitmap = splittedBitmap[it].asImageBitmap(), contentDescription = "Rosen")
                 }
             }
@@ -118,8 +130,42 @@ fun MainContent(difficulty: Int, imageID: Int) {
     }
 }
 
-private fun move(splittedBitmap:ArrayList<Bitmap>,it:Int) {
-    Collections.swap(splittedBitmap, it, 6)
+private fun move(splittedBitmap:ArrayList<Bitmap>,imgID:Int) {
+    Collections.swap(splittedBitmap, imgID, 6)
+}
+
+@Composable
+private fun VerticalGrid(){
+    val data = remember {mutableStateOf(List(100) { "item $it" })}
+    val state = rememberReorderableLazyGridState(onMove = {from, to ->
+        data.value = data.value.toMutableList().apply {
+            add(to.index, removeAt(from.index))
+        }
+    })
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(4),
+        state = state.gridState,
+        contentPadding = PaddingValues(horizontal = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier
+            .reorderable(state)
+            .detectReorderAfterLongPress(state)
+    ) {
+        items(data.value, { it }) { item ->
+            ReorderableItem(state, key = item, defaultDraggingModifier = Modifier) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .size(100.dp)
+                ) {
+                    Text(text = item,
+                        modifier = Modifier.detectReorderAfterLongPress(state))
+                }
+            }
+        }
+    }
 }
 
 
@@ -151,43 +197,43 @@ fun movePictures(pic1: Int, pic2: Int, listItem: LocaleDisplayNames.UiListItem) 
 
 fun splitImage(image: Bitmap, chunkNumbers: Int): ArrayList<Bitmap>{
 
-        //For the number of rows and columns of the grid to be displayed
-        val rows: Int
-        val cols: Int
+    //For the number of rows and columns of the grid to be displayed
+    val rows: Int
+    val cols: Int
 
-        //For height and width of the small image chunks
-        val chunkHeight: Int
-        val chunkWidth: Int
+    //For height and width of the small image chunks
+    val chunkHeight: Int
+    val chunkWidth: Int
 
-        //To store all the small image chunks in bitmap format in this list
-        val chunkedImages = ArrayList<Bitmap>(chunkNumbers)
+    //To store all the small image chunks in bitmap format in this list
+    val chunkedImages = ArrayList<Bitmap>(chunkNumbers)
 
-        //Getting the scaled bitmap of the source image
+    //Getting the scaled bitmap of the source image
 
-        //val bitmap = image.bitmap
-        val scaledBitmap = Bitmap.createScaledBitmap(image, image.width, image.height, true)
-        cols = Math.sqrt(chunkNumbers.toDouble()).toInt()
-        rows = cols
-        chunkHeight = image.height / rows
-        chunkWidth = image.width / cols
+    //val bitmap = image.bitmap
+    val scaledBitmap = Bitmap.createScaledBitmap(image, image.width, image.height, true)
+    cols = Math.sqrt(chunkNumbers.toDouble()).toInt()
+    rows = cols
+    chunkHeight = image.height / rows
+    chunkWidth = image.width / cols
 
-        //xCoord and yCoord are the pixel positions of the image chunks
-        var yCoord = 0
-        for (x in 0 until rows) {
-            var xCoord = 0
-            for (y in 0 until cols) {
-                chunkedImages.add(
-                    Bitmap.createBitmap(
-                        scaledBitmap,
-                        xCoord,
-                        yCoord,
-                        chunkWidth,
-                        chunkHeight
-                    )
+    //xCoord and yCoord are the pixel positions of the image chunks
+    var yCoord = 0
+    for (x in 0 until rows) {
+        var xCoord = 0
+        for (y in 0 until cols) {
+            chunkedImages.add(
+                Bitmap.createBitmap(
+                    scaledBitmap,
+                    xCoord,
+                    yCoord,
+                    chunkWidth,
+                    chunkHeight
                 )
-                xCoord += chunkWidth
-            }
-            yCoord += chunkHeight
+            )
+            xCoord += chunkWidth
         }
+        yCoord += chunkHeight
+    }
     return chunkedImages
 }
