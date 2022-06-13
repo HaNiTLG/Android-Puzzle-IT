@@ -1,49 +1,33 @@
 package com.example.myApp.screens.game
 
-import android.media.Image
-import android.media.MediaDescription
-import android.widget.ImageView
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.modifier.modifierLocalOf
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.example.myApp.R
-
 
 @Preview(showBackground = true)
 @Composable
-fun Gamescreen (navController: NavController = rememberNavController()){
+fun Gamescreen (navController: NavController = rememberNavController(), difficulty: Int = 0, imageID: Int = 0){
     Scaffold(
-       topBar = {
+        topBar = {
             TopAppBar(elevation = 3.dp) {
                 Row {
                     Icon(imageVector = Icons.Default.ArrowBack,
@@ -61,23 +45,25 @@ fun Gamescreen (navController: NavController = rememberNavController()){
             }
         }
     ) {
-        MainContent()
+        MainContent(difficulty, imageID)
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainContent() {
-    val list = (1..9).map { it.toString() }
-    //9; 16; 25
+fun MainContent(difficulty: Int, imageID: Int) {
+    var colum = 0
+    if (difficulty == 1)  { //Mittel
+        colum = 4
+    } else if (difficulty == 2) { //Schwer
+        colum = 5
+    } else { //leicht
+        colum = 3
+    }
+    val list = (1..colum*colum).map { it.toString() } //9,16,25
     val configuration = LocalConfiguration.current
-
-    val colum = 3
     val imageHeight = (configuration.screenHeightDp.dp - (101-(5-colum)).dp) / colum
-    //3 = 99
-    //4 = 100
-    //5 = 101
-
+    //3 = 99, 4 = 100, 5 = 101
     Scaffold(
         modifier = Modifier
             .fillMaxWidth()
@@ -103,32 +89,9 @@ fun MainContent() {
                             .height(imageHeight),
                         elevation = 8.dp,
                     ) {
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(R.drawable.englischerosen)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = "Picture of Puzzle",
-                            //contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    //translationX = 0.5f
-                                    //translationY = 0.5f
-                                    //scaleX = 0.5f
-                                    //scaleY = 0.5f
-                                })
-
-/*                        Text(
-                            text = "${index+1}",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 30.sp,
-                            color = Color(0xFFFFFFFF),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxHeight()
-
-                        )*/
+                        val b: Bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, R.drawable.rosen)
+                        val splittedBitmap = splitImage(b,colum*colum)
+                        Image(bitmap = splittedBitmap[index].asImageBitmap(), contentDescription = "Rosen")
                     }
                 }
             }
@@ -136,48 +99,45 @@ fun MainContent() {
     }
 }
 
-@Composable
-fun splitImage(image: Image,
-pcs: Int ): ArrayList<ImageView> {
+fun splitImage(image: Bitmap, chunkNumbers: Int): ArrayList<Bitmap>{
 
+        //For the number of rows and columns of the grid to be displayed
+        val rows: Int
+        val cols: Int
 
+        //For height and width of the small image chunks
+        val chunkHeight: Int
+        val chunkWidth: Int
 
-    AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(R.drawable.englischerosen)
-            .crossfade(true)
-            .build(),
-        contentDescription = "Picture of Puzzle",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-        .graphicsLayer {
-            translationX = 0.4f
-            translationY = 0.4f
-            rotationY = 53f
-            rotationX = 44f
-            rotationZ = 23f
-            scaleX = 0.4f
-            scaleY = 0.5f
-        })
+        //To store all the small image chunks in bitmap format in this list
+        val chunkedImages = ArrayList<Bitmap>(chunkNumbers)
 
-    return ArrayList()
-}
-@Composable
-fun imageCard(
-    painter: Painter,
-    contentDescription: String,
-    title: String,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth(),
-        shape = RoundedCornerShape(15.dp),
-        elevation = 5.dp
+        //Getting the scaled bitmap of the source image
 
-    ) {
-        Box(modifier = Modifier
-            .height(200.dp))
-    }
+        //val bitmap = image.bitmap
+        val scaledBitmap = Bitmap.createScaledBitmap(image, image.width, image.height, true)
+        cols = Math.sqrt(chunkNumbers.toDouble()).toInt()
+        rows = cols
+        chunkHeight = image.height / rows
+        chunkWidth = image.width / cols
 
+        //xCoord and yCoord are the pixel positions of the image chunks
+        var yCoord = 0
+        for (x in 0 until rows) {
+            var xCoord = 0
+            for (y in 0 until cols) {
+                chunkedImages.add(
+                    Bitmap.createBitmap(
+                        scaledBitmap,
+                        xCoord,
+                        yCoord,
+                        chunkWidth,
+                        chunkHeight
+                    )
+                )
+                xCoord += chunkWidth
+            }
+            yCoord += chunkHeight
+        }
+    return chunkedImages
 }
