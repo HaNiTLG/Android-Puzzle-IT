@@ -1,31 +1,47 @@
 package com.example.myApp.screens.game
 
+
+
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.icu.text.LocaleDisplayNames
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.pointer.consumeAllChanges
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myApp.R
+import java.util.*
+import kotlin.math.roundToInt
+
 
 @Preview(showBackground = true)
 @Composable
-fun Gamescreen (navController: NavController = rememberNavController(), difficulty: Int = 0, imageID: Int = 0){
+fun Gamescreen (navController: NavController = rememberNavController(), difficulty: Int = 0, imageID: Int = 0) {
     Scaffold(
         topBar = {
             TopAppBar(elevation = 3.dp) {
@@ -46,23 +62,25 @@ fun Gamescreen (navController: NavController = rememberNavController(), difficul
         }
     ) {
         MainContent(difficulty, imageID)
+        //movePictures()
     }
 }
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainContent(difficulty: Int, imageID: Int) {
-    var colum = 0
+    var colum = 3 //Leicht
     if (difficulty == 1)  { //Mittel
         colum = 4
     } else if (difficulty == 2) { //Schwer
         colum = 5
-    } else { //leicht
-        colum = 3
     }
     val list = (1..colum*colum).map { it.toString() } //9,16,25
     val configuration = LocalConfiguration.current
     val imageHeight = (configuration.screenHeightDp.dp - (101-(5-colum)).dp) / colum
+    val b: Bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, R.drawable.rosen)
+    val splittedBitmap = splitImage(b,colum*colum)
     //3 = 99, 4 = 100, 5 = 101
     Scaffold(
         modifier = Modifier
@@ -78,25 +96,57 @@ fun MainContent(difficulty: Int, imageID: Int) {
                 top = 16.dp,
                 end = 12.dp,
                 bottom = 16.dp
-            ),
-            content = {
-                itemsIndexed(list) { index, list ->
-                    Card(
-                        //backgroundColor = Color.Red,
-                        modifier = Modifier
-                            .padding(1.dp)
-                            .fillMaxWidth()
-                            .height(imageHeight),
-                        elevation = 8.dp,
-                    ) {
-                        val b: Bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, R.drawable.rosen)
-                        val splittedBitmap = splitImage(b,colum*colum)
-                        Image(bitmap = splittedBitmap[index].asImageBitmap(), contentDescription = "Rosen")
-                    }
+            )
+        ) {
+            itemsIndexed(list) { it, list ->
+                Card(
+                    //backgroundColor = Color.Red,
+                    modifier = Modifier
+                        .padding(1.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                            move(splittedBitmap, it)
+                        }
+                        .fillMaxHeight(),
+                    elevation = 8.dp,
+                ) {
+
+                    Image(bitmap = splittedBitmap[it].asImageBitmap(), contentDescription = "Rosen")
                 }
             }
-        )
+        }
     }
+}
+
+private fun move(splittedBitmap:ArrayList<Bitmap>,it:Int) {
+    Collections.swap(splittedBitmap, it, 6)
+}
+
+
+@Composable
+fun movePictures(pic1: Int, pic2: Int, listItem: LocaleDisplayNames.UiListItem) {
+    val offsetX = remember { mutableStateOf( 0f)}
+    val offsetY = remember { mutableStateOf( 0f)}
+
+    Box(
+        modifier = Modifier
+            .offset {
+                IntOffset(
+                    x = offsetX.value.roundToInt(),
+                    y = offsetY.value.roundToInt()
+                )
+            }
+            .pointerInput(Unit) {
+                detectDragGestures { change, dragAmount ->
+                    change.consumeAllChanges()
+                    offsetX.value += dragAmount.x
+                    offsetY.value += dragAmount.y
+                }
+            }
+            .size(80.dp)
+            .clip(CircleShape)
+            .background(Color.Blue),
+    )
 }
 
 fun splitImage(image: Bitmap, chunkNumbers: Int): ArrayList<Bitmap>{
