@@ -1,13 +1,16 @@
 package com.example.myApp.screens.favorit
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,6 +20,7 @@ import com.example.myApp.Daten.PuzzleList
 import com.example.myApp.Daten.getPuzzles
 import com.example.myApp.widgets.PuzzleRow
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
 fun FavoritScreen(navController: NavController = rememberNavController()) {
