@@ -6,7 +6,7 @@ data class PuzzleList(
     val id: String,
     val title: String,
     val name: String,
-    val difficulty: String,
+    val difficulty: Int,
     val images: List<Int>
 )
 
@@ -20,7 +20,7 @@ fun getPuzzles(): List<PuzzleList> {
             id = "tt0499549",
             title = "Level 1",
             name = "Simple flowers",
-            difficulty = "Very Easy",
+            difficulty = 0,
            images = listOf(R.drawable.level1),
         ),
 
@@ -28,7 +28,7 @@ fun getPuzzles(): List<PuzzleList> {
             id = "tt0416449",
             title = "Level 2",
             name = "Landscape",
-            difficulty = "Easy",
+            difficulty = 1,
             images = listOf(R.drawable.level2),
         ),
 
@@ -36,7 +36,7 @@ fun getPuzzles(): List<PuzzleList> {
             id = "tt0848228",
             title = "Level 3",
             name = "Waterfall",
-            difficulty = "Normal",
+            difficulty = 2,
             images = listOf(R.drawable.level3),
         ),
 
@@ -44,7 +44,7 @@ fun getPuzzles(): List<PuzzleList> {
             id = "tt0993846",
             title = "Level 4",
             name = "Computer",
-            difficulty = "Hard",
+            difficulty = 3,
             images = listOf(R.drawable.level4),
         ),
 
@@ -52,7 +52,7 @@ fun getPuzzles(): List<PuzzleList> {
             id = "tt0816692",
             title = "Level 5",
             name = "Mountains",
-            difficulty = "Impossible",
+            difficulty = 4,
             images = listOf(R.drawable.level5),
         ),
         )

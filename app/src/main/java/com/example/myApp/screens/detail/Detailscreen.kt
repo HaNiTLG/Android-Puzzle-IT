@@ -3,6 +3,8 @@ package com.example.myApp.screens.detail
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -12,8 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.example.myApp.Daten.PuzzleList
 import com.example.myApp.Daten.getPuzzle
+import com.example.myApp.R
 import com.example.myApp.widgets.HorizontalScrollableImageView
 import com.example.myApp.widgets.PuzzleRow
 
@@ -46,10 +50,13 @@ fun MainContent(puzzle: PuzzleList, navController: NavController = rememberNavCo
         .fillMaxHeight()
         .fillMaxWidth()) {
         Column {
-            PuzzleRow(puzzle = puzzle)
-            Spacer(modifier = Modifier.height(8.dp))
-            Divider()
-            HorizontalScrollableImageView(puzzle = puzzle)
+            LazyRow {
+                items(puzzle.images) { image ->
+                    Card(modifier = Modifier.size(400.dp), elevation = 4.dp) {
+                        AsyncImage(model = image, contentDescription = puzzle.title )
+                    }
+                }
+            }
             if (puzzle.title == "Level 1")
                 OutlinedButton(onClick = {navController.navigate(route = "Level1")})
                 {

@@ -24,10 +24,10 @@ fun MyNavigation(){
         ) { backStackEntry ->
             DetailScreen(navController = navController, puzzleId = backStackEntry.arguments?.getString("puzzleId"))
         }
-        composable("Level1") { Level1(navController = navController) }
-        composable("Level2") { Level2(navController = navController) }
-        composable("Level3") { Level3(navController = navController) }
-        composable("Level4") { Level4(navController = navController) }
-        composable("Level5") { Level5(navController = navController) }
+        composable("Level1") { Level1(navController = navController, difficulty = 1) }
+        composable("Level2") { Level2(navController = navController, difficulty = 2) }
+        composable("Level3") { Level3(navController = navController, difficulty = 3) }
+        composable("Level4") { Level4(navController = navController, difficulty = 4) }
+        composable("Level5") { Level5(navController = navController, difficulty = 5) }
     }
 }

@@ -64,10 +64,18 @@ fun Level5 (puzzleId: String? = "tt0499549", navController: NavController = reme
 @Composable
 fun MainContentLevel5(puzzle: PuzzleList, difficulty: Int, imageID: Int, navController: NavController) {
 
-    var colum = 3 //easy
-    if (difficulty == 1)  { //normal
+    var colum = 3
+
+    if (difficulty == 2) {
+        colum = 3
+    }
+    if (difficulty == 3) {
+        colum = 3
+    }
+    if (difficulty == 4) {
         colum = 4
-    } else if (difficulty == 2) { //hard
+    }
+    if (difficulty == 5) {
         colum = 5
     }
 
