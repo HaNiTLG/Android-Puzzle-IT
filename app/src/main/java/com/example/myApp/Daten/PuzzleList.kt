@@ -21,7 +21,7 @@ fun getPuzzles(): List<PuzzleList> {
             title = "Level 1",
             name = "Simple flowers",
             difficulty = "Very Easy",
-           images = listOf(R.drawable.rosen),
+           images = listOf(R.drawable.level1),
         ),
 
         PuzzleList(
@@ -29,7 +29,7 @@ fun getPuzzles(): List<PuzzleList> {
             title = "Level 2",
             name = "Landscape",
             difficulty = "Easy",
-            images = listOf(R.drawable.rosen),
+            images = listOf(R.drawable.level2),
         ),
 
         PuzzleList(
@@ -37,7 +37,7 @@ fun getPuzzles(): List<PuzzleList> {
             title = "Level 3",
             name = "Waterfall",
             difficulty = "Normal",
-            images = listOf(R.drawable.rosen),
+            images = listOf(R.drawable.level3),
         ),
 
         PuzzleList(
@@ -45,7 +45,7 @@ fun getPuzzles(): List<PuzzleList> {
             title = "Level 4",
             name = "Computer",
             difficulty = "Hard",
-            images = listOf(R.drawable.rosen),
+            images = listOf(R.drawable.level4),
         ),
 
         PuzzleList(
@@ -53,7 +53,7 @@ fun getPuzzles(): List<PuzzleList> {
             title = "Level 5",
             name = "Mountains",
             difficulty = "Impossible",
-            images = listOf(R.drawable.rosen),
+            images = listOf(R.drawable.level5),
         ),
         )
 }

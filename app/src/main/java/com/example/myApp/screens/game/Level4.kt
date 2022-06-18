@@ -20,10 +20,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.myApp.Daten.PuzzleList
+import com.example.myApp.Daten.getPuzzle
 import com.example.myApp.R
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorder
@@ -33,9 +34,9 @@ import org.burnoutcrew.reorderable.reorderable
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview(showBackground = true)
 @Composable
-fun Gamescreen (navController: NavController = rememberNavController(), difficulty: Int = 0, imageID: Int = 0) {
+fun Level4 (puzzleId: String? = "tt0499549", navController: NavController = rememberNavController(), difficulty: Int = 0, imageID: Int = 0) {
+    val puzzle = getPuzzle(puzzleId = puzzleId)
     Scaffold(
         topBar = {
             TopAppBar(elevation = 3.dp) {
@@ -55,38 +56,42 @@ fun Gamescreen (navController: NavController = rememberNavController(), difficul
             }
         }
     ) {
-        MainContent(difficulty, imageID, navController)
+
+        MainContentLevel4(puzzle, difficulty, imageID, navController)
     }
 }
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnrememberedMutableState")
 @Composable
-fun MainContent(difficulty: Int, imageID: Int, navController: NavController) {
+fun MainContentLevel4(puzzle: PuzzleList, difficulty: Int, imageID: Int, navController: NavController) {
+
     var colum = 3 //easy
     if (difficulty == 1)  { //normal
         colum = 4
     } else if (difficulty == 2) { //hard
         colum = 5
     }
-    val b: Bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, R.drawable.rosen)
-    val splittedBitmap = splitImage(b,colum*colum)
+
+    val b: Bitmap =
+        BitmapFactory.decodeResource(LocalContext.current.resources, R.drawable.level4)
+    val splittedBitmap = splitImageLevel4(b,colum*colum)
     val data = remember {mutableStateOf(List(colum*colum) { it })} //Index of Grid fields, ordered
 
     val state = rememberReorderableLazyGridState(onMove = {from, to ->
         data.value = data.value.toMutableList().apply {
-            swap(to.index, from.index)
+            swapLevel4(to.index, from.index)
         }
     })
 
-    if (isGameOver(data.value) && statik.count == 0) {// If Sorted
-            data.value = data.value.toMutableList().apply { //Randomise
-                shuffle()
-            }
+    if (isGameOverLevel4(data.value) && statikLevel4.count == 0) {// If Sorted
+        data.value = data.value.toMutableList().apply { //Randomise
+            shuffle()
+        }
     }
 
-    statik() //For Closing Game
+    statikLevel4() //For Closing Game
 
-    if (isGameOver(data.value) && statik.count > 0) {
-        popUpWindow(navController)
+    if (isGameOverLevel4(data.value) && statikLevel4.count > 0) {
+        popUpWindowLevel4(navController)
     }
 
     Scaffold(
@@ -107,7 +112,7 @@ fun MainContent(difficulty: Int, imageID: Int, navController: NavController) {
         ) {
             items(data.value, { it }) { item ->
                 ReorderableItem(state, key = item, defaultDraggingModifier = Modifier) {
-                   Card(
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight(),
@@ -125,24 +130,24 @@ fun MainContent(difficulty: Int, imageID: Int, navController: NavController) {
 }
 
 @Composable
-fun popUpWindow(navController: NavController){
+fun popUpWindowLevel4(navController: NavController){
     val open = remember { mutableStateOf(false)}
 
     AlertDialog(
         onDismissRequest = {
-        open.value = false
-    }, title = {
-        Text(text = "GEWONNEN!")
-    },
+            open.value = false
+        }, title = {
+            Text(text = "GEWONNEN!")
+        },
         confirmButton = {
-        Button(
-            onClick = {
-                open.value = true
-                navController.navigate(route = "homescreen")
-            }) {
-            Text("OK")
-        }
-    },
+            Button(
+                onClick = {
+                    open.value = true
+                    navController.navigate(route = "homescreen")
+                }) {
+                Text("OK")
+            }
+        },
         dismissButton = {
             Button(
                 onClick = {
@@ -155,7 +160,7 @@ fun popUpWindow(navController: NavController){
     )
 }
 
-class statik() {
+class statikLevel4() {
     companion object {
         var count:Int=0;
     }
@@ -164,20 +169,20 @@ class statik() {
     }
 }
 
-fun isGameOver(data: List<Int>): Boolean {
+fun isGameOverLevel4(data: List<Int>): Boolean {
     if (data == data.toMutableList().sorted()) {// If Sorted
         return true
     }
     return false
 }
 
-fun <T> MutableList<T>.swap(index1: Int, index2: Int){
+fun <T> MutableList<T>.swapLevel4(index1: Int, index2: Int){
     val tmp = this[index1]
     this[index1] = this[index2]
     this[index2] = tmp
 }
 
-fun splitImage(image: Bitmap, chunkNumbers: Int): ArrayList<Bitmap>{
+fun splitImageLevel4(image: Bitmap, chunkNumbers: Int): ArrayList<Bitmap>{
 
     //For the number of rows and columns of the grid to be displayed
     val rows: Int

@@ -7,8 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.myApp.screens.detail.DetailScreen
-import com.example.myApp.screens.favorit.FavoritScreen
-import com.example.myApp.screens.game.Gamescreen
+import com.example.myApp.screens.game.*
 import com.example.myApp.screens.home.HomeScreen
 
 @Composable
@@ -25,6 +24,10 @@ fun MyNavigation(){
         ) { backStackEntry ->
             DetailScreen(navController = navController, puzzleId = backStackEntry.arguments?.getString("puzzleId"))
         }
-        composable("gamescreen") { Gamescreen(navController = navController) }
+        composable("Level1") { Level1(navController = navController) }
+        composable("Level2") { Level2(navController = navController) }
+        composable("Level3") { Level3(navController = navController) }
+        composable("Level4") { Level4(navController = navController) }
+        composable("Level5") { Level5(navController = navController) }
     }
 }

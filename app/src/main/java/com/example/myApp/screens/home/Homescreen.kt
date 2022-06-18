@@ -42,7 +42,7 @@ fun HomeScreen(navController: NavController = rememberNavController()){
                     DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false}) {
                         DropdownMenuItem(onClick = { /*TODO*/ }) {
                             Row(modifier = Modifier
-                                .clickable { navController.navigate(route = "gamescreen")}
+                                .clickable { navController.navigate(route = "Level3")}
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Favorite,
