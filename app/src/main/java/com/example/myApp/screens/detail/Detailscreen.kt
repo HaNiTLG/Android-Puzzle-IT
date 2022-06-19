@@ -17,9 +17,6 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.myApp.Daten.PuzzleList
 import com.example.myApp.Daten.getPuzzle
-import com.example.myApp.R
-import com.example.myApp.widgets.HorizontalScrollableImageView
-import com.example.myApp.widgets.PuzzleRow
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
