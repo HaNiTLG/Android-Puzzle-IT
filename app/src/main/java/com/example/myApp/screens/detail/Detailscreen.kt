@@ -46,39 +46,41 @@ fun DetailScreen(puzzleId: String? = "tt0499549", navController: NavController =
 
 @Composable
 fun MainContent(puzzle: PuzzleList, navController: NavController = rememberNavController()) {
-    Surface(modifier = Modifier
-        .fillMaxHeight()
-        .fillMaxWidth()) {
+    Surface(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth()
+    ) {
         Column {
             LazyRow {
                 items(puzzle.images) { image ->
                     Card(modifier = Modifier.size(400.dp), elevation = 4.dp) {
-                        AsyncImage(model = image, contentDescription = puzzle.title )
+                        AsyncImage(model = image, contentDescription = puzzle.title)
                     }
                 }
             }
             if (puzzle.title == "Level 1")
-                OutlinedButton(onClick = {navController.navigate(route = "Level1")})
+                OutlinedButton(onClick = { navController.navigate(route = "Level1") })
                 {
                     Text("Start Game - LEVEL 1")
                 }
             if (puzzle.title == "Level 2")
-                OutlinedButton(onClick = {navController.navigate(route = "Level2")})
+                OutlinedButton(onClick = { navController.navigate(route = "Level2") })
                 {
                     Text("Start Game - LEVEL 2")
                 }
             if (puzzle.title == "Level 3")
-                OutlinedButton(onClick = {navController.navigate(route = "Level3")})
+                OutlinedButton(onClick = { navController.navigate(route = "Level3") })
                 {
                     Text("Start Game - LEVEL 3")
                 }
             if (puzzle.title == "Level 4")
-                OutlinedButton(onClick = {navController.navigate(route = "Level4")})
+                OutlinedButton(onClick = { navController.navigate(route = "Level4") })
                 {
                     Text("Start Game - LEVEL 4")
                 }
             if (puzzle.title == "Level 5")
-                OutlinedButton(onClick = {navController.navigate(route = "Level5")})
+                OutlinedButton(onClick = { navController.navigate(route = "Level5") })
                 {
                     Text("Start Game - LEVEL 5")
                 }
