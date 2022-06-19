@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,9 @@ fun MainContent(puzzle: PuzzleList, navController: NavController = rememberNavCo
             .fillMaxHeight()
             .fillMaxWidth()
     ) {
-        Column {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             LazyRow {
                 items(puzzle.images) { image ->
                     Card(modifier = Modifier.size(400.dp), elevation = 4.dp) {
@@ -56,31 +59,35 @@ fun MainContent(puzzle: PuzzleList, navController: NavController = rememberNavCo
                     }
                 }
             }
-            if (puzzle.title == "Level 1")
-                OutlinedButton(onClick = { navController.navigate(route = "Level1") })
-                {
-                    Text("Start Game - LEVEL 1")
-                }
-            if (puzzle.title == "Level 2")
-                OutlinedButton(onClick = { navController.navigate(route = "Level2") })
-                {
-                    Text("Start Game - LEVEL 2")
-                }
-            if (puzzle.title == "Level 3")
-                OutlinedButton(onClick = { navController.navigate(route = "Level3") })
-                {
-                    Text("Start Game - LEVEL 3")
-                }
-            if (puzzle.title == "Level 4")
-                OutlinedButton(onClick = { navController.navigate(route = "Level4") })
-                {
-                    Text("Start Game - LEVEL 4")
-                }
-            if (puzzle.title == "Level 5")
-                OutlinedButton(onClick = { navController.navigate(route = "Level5") })
-                {
-                    Text("Start Game - LEVEL 5")
-                }
+            Card(
+                modifier = Modifier.padding(100.dp)
+            ) {
+                if (puzzle.title == "Level 1")
+                    OutlinedButton(onClick = { navController.navigate(route = "Level1") })
+                    {
+                        Text("Start Game - LEVEL 1")
+                    }
+                if (puzzle.title == "Level 2")
+                    OutlinedButton(onClick = { navController.navigate(route = "Level2") })
+                    {
+                        Text("Start Game - LEVEL 2")
+                    }
+                if (puzzle.title == "Level 3")
+                    OutlinedButton(onClick = { navController.navigate(route = "Level3") })
+                    {
+                        Text("Start Game - LEVEL 3")
+                    }
+                if (puzzle.title == "Level 4")
+                    OutlinedButton(onClick = { navController.navigate(route = "Level4") })
+                    {
+                        Text("Start Game - LEVEL 4")
+                    }
+                if (puzzle.title == "Level 5")
+                    OutlinedButton(onClick = { navController.navigate(route = "Level5") })
+                    {
+                        Text("Start Game - LEVEL 5")
+                    }
+            }
         }
     }
 }
